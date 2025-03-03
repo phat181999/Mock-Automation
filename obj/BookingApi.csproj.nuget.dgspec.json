@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Admin\\Desktop\\testing-api\\BookingApi\\BookingApi.csproj": {}
+    "/Users/phatho/Desktop/Mock-Automation/BookingApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Admin\\Desktop\\testing-api\\BookingApi\\BookingApi.csproj": {
+    "/Users/phatho/Desktop/Mock-Automation/BookingApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admin\\Desktop\\testing-api\\BookingApi\\BookingApi.csproj",
+        "projectUniqueName": "/Users/phatho/Desktop/Mock-Automation/BookingApi.csproj",
         "projectName": "BookingApi",
-        "projectPath": "C:\\Users\\Admin\\Desktop\\testing-api\\BookingApi\\BookingApi.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admin\\Desktop\\testing-api\\BookingApi\\obj\\",
+        "projectPath": "/Users/phatho/Desktop/Mock-Automation/BookingApi.csproj",
+        "packagesPath": "/Users/phatho/.nuget/packages/",
+        "outputPath": "/Users/phatho/Desktop/Mock-Automation/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/Users/phatho/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
@@ -40,7 +40,7 @@
           "dependencies": {
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[6.5.0, )"
+              "version": "[7.3.1, )"
             }
           },
           "imports": [
@@ -49,8 +49,7 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -62,7 +61,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.428\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/opt/homebrew/Cellar/dotnet@6/6.0.136/libexec/sdk/6.0.136/RuntimeIdentifierGraph.json"
         }
       }
     }

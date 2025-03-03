@@ -81,27 +81,114 @@ namespace BookingApi.Services
                 return null;
             }
         }
+
+        public async Task<UpdateBookingResponse?> UpdateBookingAsync(int bookingId, BookingRequest request, HttpContext httpContext)
+        {
+            var jsonPayload = JsonSerializer.Serialize(request);
+            _logger.LogInformation("Updating booking {0} with data: {1}", bookingId, jsonPayload);
+
+            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+            _httpClient.DefaultRequestHeaders.Clear();
+            // Lấy token từ header của request
+            if (!httpContext.Request.Headers.TryGetValue("Authorization", out var token))
+            {
+                _logger.LogError("Authorization token is missing!");
+                return null;
+            }
+
+            _logger.LogInformation("Using token: {0}", token);
+
+            // Thêm token vào header
+            _httpClient.DefaultRequestHeaders.Add("Cookie", $"token={token}");
+            _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+            var response = await _httpClient.PutAsync($"https://restful-booker.herokuapp.com/booking/{bookingId}", content);
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            _logger.LogInformation("Response: {0}", responseBody);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                _logger.LogError("Failed to update booking {0}! Status Code: {1}, Response: {2}", bookingId, response.StatusCode, responseBody);
+                return null;
+            }
+
+            _logger.LogInformation("Booking {0} updated successfully!", bookingId);
+            return JsonSerializer.Deserialize<UpdateBookingResponse>(responseBody);
+        }
+
+        public async Task<bool> DeleteBookingAsync(int bookingId, HttpContext httpContext)
+        {
+            _logger.LogInformation("Deleting booking {0}...", bookingId);
+
+            _httpClient.DefaultRequestHeaders.Clear();
+            _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+
+            // Lấy token từ header của request
+            if (!httpContext.Request.Headers.TryGetValue("Authorization", out var token))
+            {
+                _logger.LogError("Authorization token is missing!");
+                return false;
+            }
+
+            _logger.LogInformation("Using token: {0}", token);
+
+            // Thêm token vào header
+            _httpClient.DefaultRequestHeaders.Add("Cookie", $"token={token}");
+
+            var response = await _httpClient.DeleteAsync($"https://restful-booker.herokuapp.com/booking/{bookingId}");
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            _logger.LogInformation("Response: {0}", responseBody);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                _logger.LogError("Failed to delete booking {0}! Status Code: {1}, Response: {2}", bookingId, response.StatusCode, responseBody);
+                return false;
+            }
+
+            _logger.LogInformation("Booking {0} deleted successfully!", bookingId);
+            return true;
+        }
     }
 
     public class BookingRequest
     {
-        public string Firstname { get; set; } = string.Empty;
-        public string Lastname { get; set; } = string.Empty;
-        public int? TotalPrice { get; set; }  // Hỗ trợ giá trị null
-        public bool DepositPaid { get; set; }
-        public BookingDates BookingDates { get; set; } = new BookingDates();
-        public string AdditionalNeeds { get; set; } = string.Empty;
+        public string firstname { get; set; } = string.Empty;
+        public string lastname { get; set; } = string.Empty;
+        public int? totalprice { get; set; } 
+        public bool depositpaid { get; set; }
+        public BookingDates bookingdates { get; set; } = new BookingDates();
+        public string additionalneeds { get; set; } = string.Empty;
     }
 
     public class BookingDates
     {
-        public string Checkin { get; set; } = string.Empty;
-        public string Checkout { get; set; } = string.Empty;
+        public string checkin { get; set; } = string.Empty;
+        public string checkout { get; set; } = string.Empty;
     }
 
     public class BookingResponse
     {
-        public int BookingId { get; set; }
-        public BookingRequest Booking { get; set; } = new BookingRequest();
+        public int bookingid { get; set; }
+        public BookingRequest booking { get; set; } = new BookingRequest();
     }
+
+    public class UpdateBookingResponse
+    {
+        public string firstname { get; set; } = string.Empty;
+        public string lastname { get; set; } = string.Empty;
+        public int? totalprice { get; set; } 
+        public bool depositpaid { get; set; }
+        public BookingDates bookingdates { get; set; } = new BookingDates();
+        public string additionalneeds { get; set; } = string.Empty;
+    }
+
+    // public class BookingDates
+    // {
+    //     public string checkin { get; set; } = string.Empty;
+    //     public string checkout { get; set; } = string.Empty;
+    // }
+
+
 }
